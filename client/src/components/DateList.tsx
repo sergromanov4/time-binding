@@ -1,41 +1,40 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 
 import { getDatesForTwoWeeks } from "@/utils/date";
-import { addNewTime } from "@/store/dateSlice";
-
-import type { IDay } from "@/interfaces/date";
 
 import TimeList from "./TimeList";
+import { useAddNewPostMutation, useGetDayListQuery } from "@/api";
 
 const DateList = () => {
-  const dispatch = useDispatch();
-
-  const savedDayList: IDay[] = useSelector((store: any) => store.date.dayList);
+  const { data } = useGetDayListQuery();
+  const [addDay] = useAddNewPostMutation();
 
   const [selectedDay, setSelectedDay] = useState<string>("");
 
   const handleSubmit = useCallback(
     (time: string) => {
-      dispatch(
-        addNewTime({
-          selectedDay,
-          time,
-        }),
-      );
+      addDay({
+        day: selectedDay,
+        time: {
+          [time]: {
+            userId: 'me',
+            status: "scheduled"
+          }
+        }
+      })
     },
     [selectedDay],
   );
 
   const currentDayData = useMemo(() => {
     return (
-      (savedDayList &&
-        savedDayList.find((item) => item.date === selectedDay)) ||
+      (data &&
+        data.find((item) => item.day === selectedDay)) ||
       null
     );
-  }, [savedDayList, selectedDay]);
+  }, [data, selectedDay]);
 
   return (
     <>

@@ -3,7 +3,7 @@ import { EStatus } from "@/app/constants/time";
 interface IDay {
   id: string;
   time: ITime;
-  date: string;
+  day: string;
 }
 
 interface ITimeEntity {
