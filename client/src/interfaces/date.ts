@@ -1,7 +1,7 @@
 import { EStatus } from "@/app/constants/time";
 
 interface IDay {
-  id: string;
+  _id: string;
   time: ITime;
   day: string;
 }

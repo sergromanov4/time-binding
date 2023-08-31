@@ -14,19 +14,31 @@ export class DateListService {
   }
 
   addNewDate(dto: createDateDto): any {
-    const createdDate = new this.dateModel(dto);
+    const createdDate = new this.dateModel({
+      day: dto.day,
+      time: {
+        [dto.time]: {
+          userId: 'me',
+          status: 'scheduled',
+        },
+      },
+    });
     return createdDate.save();
   }
 
   deleteDate(id: string): Promise<DateList> {
     return this.dateModel.findByIdAndDelete({ _id: id });
   }
-
   updateTime(id: string, dto: updateDateDto): Promise<DateList> {
     return this.dateModel.findByIdAndUpdate(
       { _id: id },
       {
-        time: dto,
+        $set: {
+          [`time.${dto.time}`]: {
+            userId: 'me',
+            status: dto.status || 'scheduled',
+          },
+        },
       },
     );
   }

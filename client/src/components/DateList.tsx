@@ -3,30 +3,16 @@
 import { useCallback, useMemo, useState } from "react";
 
 import { getDatesForTwoWeeks } from "@/utils/date";
+import { useAddNewDayMutation, useGetDayListQuery, useUpdateDayMutation } from "@/api";
 
 import TimeList from "./TimeList";
-import { useAddNewPostMutation, useGetDayListQuery } from "@/api";
 
 const DateList = () => {
   const { data } = useGetDayListQuery();
-  const [addDay] = useAddNewPostMutation();
+  const [addDay] = useAddNewDayMutation();
+  const [updateDay] = useUpdateDayMutation();
 
   const [selectedDay, setSelectedDay] = useState<string>("");
-
-  const handleSubmit = useCallback(
-    (time: string) => {
-      addDay({
-        day: selectedDay,
-        time: {
-          [time]: {
-            userId: 'me',
-            status: "scheduled"
-          }
-        }
-      })
-    },
-    [selectedDay],
-  );
 
   const currentDayData = useMemo(() => {
     return (
@@ -35,6 +21,21 @@ const DateList = () => {
       null
     );
   }, [data, selectedDay]);
+
+    const handleSubmit = useCallback((time: string) => {
+      currentDayData ? 
+      updateDay({
+        id: currentDayData._id,
+        day: selectedDay,
+        time
+      })
+      : 
+      addDay({
+        day: selectedDay,
+        time
+      })
+    }, [selectedDay]
+  );
 
   return (
     <>

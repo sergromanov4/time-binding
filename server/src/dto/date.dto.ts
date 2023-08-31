@@ -1,5 +1,3 @@
-import { Time } from 'src/dateList/dateList.schema';
-
 export class createDateDto {
   day: string;
   time: string;
@@ -7,7 +5,8 @@ export class createDateDto {
 
 export class updateDateDto {
   date: string;
-  time: Map<string, Time>;
+  time: string;
+  status?: string;
 }
 
 // interface ITimeEntity {
