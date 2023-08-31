@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 
-import { dayTimeList } from "@/app/constants/time";
+import { dayTimeList } from "@/constants/time";
 
 import type { IDay } from "@/interfaces/date";
 
@@ -59,7 +59,9 @@ const TimeList: React.FC<ITimeListProps> = ({
       <button
         onClick={handleSubmit}
         disabled={!selectedTime}
-        className={"flex justify-center items-center mt-8 text-white bg-green-600 hover:bg-green-700 rounded-xl border-2 border-green-800 h-4 p-4 disabled:opacity-50 disabled:cursor-not-allowed"}
+        className={
+          "flex justify-center items-center mt-8 text-white bg-green-600 hover:bg-green-700 rounded-xl border-2 border-green-800 h-4 p-4 disabled:opacity-50 disabled:cursor-not-allowed"
+        }
       >
         Забронировать
       </button>

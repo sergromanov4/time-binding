@@ -1,4 +1,4 @@
-import { EStatus } from "@/app/constants/time";
+import { EStatus } from "@/constants/time";
 
 interface IDay {
   _id: string;

@@ -19,10 +19,10 @@ const TimeItem: React.FC<ITimeItemProps> = ({
     <button
       className={classNames(
         "w-full h-22 p-4 rounded-xl border-slate-400 border-2 hover:border-slate-600",
-        'disabled:bg-red-400 disabled:cursor-not-allowed',
+        "disabled:bg-red-400 disabled:cursor-not-allowed",
         {
           ["bg-slate-300"]: !isActive,
-          ["bg-green-300"]: isActive
+          ["bg-green-300"]: isActive,
         },
       )}
       disabled={!!timeEntity}

@@ -1,40 +1,56 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useRouter } from 'next/navigation'
 
 import { getDatesForTwoWeeks } from "@/utils/date";
-import { useAddNewDayMutation, useGetDayListQuery, useUpdateDayMutation } from "@/api";
+import {
+  useAddNewDayMutation,
+  useGetDayListQuery,
+  useUpdateDayMutation,
+} from "@/api";
 
 import TimeList from "./TimeList";
+import { useSelector } from "react-redux";
 
 const DateList = () => {
-  const { data } = useGetDayListQuery();
+  const router = useRouter();
+
+  const isAutorize: boolean = useSelector((store: any) => store.date.isAutorize)
+
+  useEffect(() => {
+    console.info(isAutorize);
+    if (!isAutorize) {
+      router.push('/login')
+    }
+  })
+
+  const { data } = useGetDayListQuery(undefined, {
+    skip: !isAutorize
+  });
   const [addDay] = useAddNewDayMutation();
   const [updateDay] = useUpdateDayMutation();
 
   const [selectedDay, setSelectedDay] = useState<string>("");
 
   const currentDayData = useMemo(() => {
-    return (
-      (data &&
-        data.find((item) => item.day === selectedDay)) ||
-      null
-    );
+    return (data && data.find((item) => item.day === selectedDay)) || null;
   }, [data, selectedDay]);
 
-    const handleSubmit = useCallback((time: string) => {
-      currentDayData ? 
-      updateDay({
-        id: currentDayData._id,
-        day: selectedDay,
-        time
-      })
-      : 
-      addDay({
-        day: selectedDay,
-        time
-      })
-    }, [selectedDay]
+  const handleSubmit = useCallback(
+    (time: string) => {
+      currentDayData
+        ? updateDay({
+            id: currentDayData._id,
+            day: selectedDay,
+            time,
+          })
+        : addDay({
+            day: selectedDay,
+            time,
+          });
+    },
+    [selectedDay],
   );
 
   return (

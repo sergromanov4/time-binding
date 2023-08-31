@@ -14,7 +14,7 @@ export const store = configureStore({
   reducer: rootReducer,
 
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({}).concat([dayListAPI.middleware])
+    getDefaultMiddleware({}).concat([dayListAPI.middleware]),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
