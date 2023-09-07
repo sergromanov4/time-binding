@@ -1,7 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useRouter } from 'next/navigation'
+import { useCallback, useMemo, useState } from "react";
 
 import { getDatesForTwoWeeks } from "@/utils/date";
 import {
@@ -11,23 +10,9 @@ import {
 } from "@/api";
 
 import TimeList from "./TimeList";
-import { useSelector } from "react-redux";
 
 const DateList = () => {
-  const router = useRouter();
-
-  const isAutorize: boolean = useSelector((store: any) => store.date.isAutorize)
-
-  useEffect(() => {
-    console.info(isAutorize);
-    if (!isAutorize) {
-      router.push('/login')
-    }
-  })
-
-  const { data } = useGetDayListQuery(undefined, {
-    skip: !isAutorize
-  });
+  const { data } = useGetDayListQuery();
   const [addDay] = useAddNewDayMutation();
   const [updateDay] = useUpdateDayMutation();
 

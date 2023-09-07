@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { ToastContainer } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 import Header from "@/components/Header";
 import { Providers } from "@/store/Providers";
@@ -25,6 +28,7 @@ export default function RootLayout({
           <>
             <Header />
             {children}
+            <ToastContainer autoClose={2000}/>
           </>
         </Providers>
       </body>

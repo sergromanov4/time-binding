@@ -29,6 +29,7 @@ export class DateListService {
   deleteDate(id: string): Promise<DateList> {
     return this.dateModel.findByIdAndDelete({ _id: id });
   }
+
   updateTime(id: string, dto: updateDateDto): Promise<DateList> {
     return this.dateModel.findByIdAndUpdate(
       { _id: id },

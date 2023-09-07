@@ -7,4 +7,9 @@ interface IUser {
   isAdmin?: boolean;
 }
 
-export type { IUser };
+interface ILogin {
+  login: string;
+  password: string;
+}
+
+export type { IUser, ILogin };

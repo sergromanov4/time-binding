@@ -1,15 +1,16 @@
 "use client";
 
-import { useRouter } from 'next/navigation'
+import { useRouter,  } from 'next/navigation'
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
-import Link from 'next/link';
-import { toast } from 'react-toastify';
 import classNames from "classnames";
+import Link from 'next/link';
+import { toast} from 'react-toastify';
+
 
 import { setToken } from '@/store/profileSlice';
-import { useLoginMutation } from '@/api/loginApi';
-import { ILoginResponse } from '@/interfaces/common';
+import { useRegisterMutation } from '@/api/loginApi';
+import { IError, ILoginResponse } from '@/interfaces/common';
 
 enum FieldType {
   login = "login",
@@ -33,10 +34,10 @@ export default function Login() {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const [loginApi] = useLoginMutation();
+  const [registerApi, { error }] = useRegisterMutation();
 
   const onSubmit = (data: IData) => {
-    loginApi({
+    registerApi({
       login: data.login,
       password: data.password,
     })
@@ -44,18 +45,17 @@ export default function Login() {
     .then((response: ILoginResponse) => {
       if (response.access_token) {
         dispatch(setToken(response.access_token));
-        router.replace('/profile/timetable')
-        toast.success("Вы успешно вошли", {
+        router.replace('/profile/timetable');
+        toast.success("Новый пользователь успешно создан", {
           position: toast.POSITION.TOP_RIGHT
         });
       }
-    }).catch(() => {
-      toast.error("Неверный логин или пароль", {
+    }).catch((error: IError) => {
+      toast.error(error.data.message, {
         position: toast.POSITION.TOP_RIGHT
       });
     })
-
-  }
+  };
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between py-24 px-6">
@@ -63,7 +63,7 @@ export default function Login() {
         className=" w-full max-w-screen-sm rounded-xl border-slate-400 border-2 bg-white flex flex-col justify-center align-center p-8 gap-6"
         onSubmit={handleSubmit(onSubmit as any)}
       >
-        <h2 className='flex text-lg justify-center'>Войти</h2>
+        <h2 className='flex text-lg justify-center'>Создай аккаунт</h2>
         <div className="flex flex-col gap-2">
           <label>Логин</label>
           <input
@@ -90,8 +90,8 @@ export default function Login() {
         />
 
         <span className='text-sm flex gap-2 justify-center'>
-          Нет аккаунта?
-          <Link className='underline text-blue-500' href="/register">Создать</Link>
+          Уже есть аккаунт?
+          <Link className='underline text-blue-500' href="/login">Войти</Link>
         </span>
       </form>
     </main>
