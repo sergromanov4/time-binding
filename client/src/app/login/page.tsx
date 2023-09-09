@@ -1,15 +1,15 @@
 "use client";
 
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
-import Link from 'next/link';
-import { toast } from 'react-toastify';
+import Link from "next/link";
+import { toast } from "react-toastify";
 import classNames from "classnames";
 
-import { setToken } from '@/store/profileSlice';
-import { useLoginMutation } from '@/api/loginApi';
-import { ILoginResponse } from '@/interfaces/common';
+import { setToken } from "@/store/profileSlice";
+import { useLoginMutation } from "@/api/loginApi";
+import { ILoginResponse } from "@/interfaces/common";
 
 enum FieldType {
   login = "login",
@@ -25,10 +25,9 @@ export default function Login() {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm({
-    shouldFocusError: false
+    shouldFocusError: false,
   });
   const dispatch = useDispatch();
   const router = useRouter();
@@ -40,30 +39,30 @@ export default function Login() {
       login: data.login,
       password: data.password,
     })
-    .unwrap()
-    .then((response: ILoginResponse) => {
-      if (response.access_token) {
-        dispatch(setToken(response.access_token));
-        router.replace('/profile/timetable')
-        toast.success("Вы успешно вошли", {
-          position: toast.POSITION.TOP_RIGHT
+      .unwrap()
+      .then((response: ILoginResponse) => {
+        if (response.access_token) {
+          dispatch(setToken(response));
+          router.replace("/profile");
+          toast.success("Вы успешно вошли", {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+        }
+      })
+      .catch(() => {
+        toast.error("Неверный логин или пароль", {
+          position: toast.POSITION.TOP_RIGHT,
         });
-      }
-    }).catch(() => {
-      toast.error("Неверный логин или пароль", {
-        position: toast.POSITION.TOP_RIGHT
       });
-    })
-
-  }
+  };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between py-24 px-6">
+    <>
       <form
-        className=" w-full max-w-screen-sm rounded-xl border-slate-400 border-2 bg-white flex flex-col justify-center align-center p-8 gap-6"
+        className="w-full max-w-screen-sm self-center rounded-xl border-slate-400 border-2 bg-white flex flex-col justify-center align-center p-8 gap-6"
         onSubmit={handleSubmit(onSubmit as any)}
       >
-        <h2 className='flex text-lg justify-center'>Войти</h2>
+        <h2 className="flex text-lg justify-center">Войти</h2>
         <div className="flex flex-col gap-2">
           <label>Логин</label>
           <input
@@ -89,11 +88,13 @@ export default function Login() {
           className="p-2 bg-green-300 rounded-xl border-slate-400 border-2 cursor-pointer active:bg-green-500"
         />
 
-        <span className='text-sm flex gap-2 justify-center'>
+        <span className="text-sm flex gap-2 justify-center">
           Нет аккаунта?
-          <Link className='underline text-blue-500' href="/register">Создать</Link>
+          <Link className="underline text-blue-500" href="/register">
+            Создать
+          </Link>
         </span>
       </form>
-    </main>
+    </>
   );
 }

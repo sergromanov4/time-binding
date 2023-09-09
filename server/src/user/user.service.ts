@@ -3,12 +3,17 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 import { User } from './user.schema';
-import { createUserDto } from 'src/dto/user.dto';
+import { createUserDto, updateUserDto } from 'src/dto/user.dto';
 
 export type IUser = {
   _id: number;
   login: string;
+  description: string;
   password: string;
+  access_token: string;
+  name: string;
+  classCount: number;
+  isAdmin: boolean;
 };
 
 @Injectable()
@@ -26,5 +31,16 @@ export class UserService {
 
   async getAllUsers(): Promise<User[]> {
     return this.users.find().exec();
+  }
+
+  async updateUser(dto: updateUserDto): Promise<User> {
+    return this.users.findOneAndUpdate(
+      { login: dto.login },
+      {
+        name: dto.name,
+        description: dto.description,
+      },
+      { new: true },
+    );
   }
 }

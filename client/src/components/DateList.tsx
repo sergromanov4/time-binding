@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
+import { toast } from "react-toastify";
 
 import { getDatesForTwoWeeks } from "@/utils/date";
 import {
@@ -17,25 +18,59 @@ const DateList = () => {
   const [updateDay] = useUpdateDayMutation();
 
   const [selectedDay, setSelectedDay] = useState<string>("");
+  const [selectedTime, setSelectedTime] = useState<string>("");
 
   const currentDayData = useMemo(() => {
     return (data && data.find((item) => item.day === selectedDay)) || null;
   }, [data, selectedDay]);
 
-  const handleSubmit = useCallback(
-    (time: string) => {
-      currentDayData
-        ? updateDay({
-            id: currentDayData._id,
-            day: selectedDay,
-            time,
+  const onSuccess = useCallback(() => {
+    window.scrollTo({ top: 0 });
+    setSelectedTime("");
+    setSelectedDay("");
+    toast.success("Время забронированно", {
+      position: toast.POSITION.TOP_RIGHT,
+    });
+  }, []);
+
+  const onFaild = useCallback(() => {
+    toast.error("Что то пошло не так. Попробуй еще раз", {
+      position: toast.POSITION.TOP_RIGHT,
+    });
+  }, []);
+
+  const handleSubmit = useCallback(() => {
+    currentDayData
+      ? updateDay({
+          id: currentDayData._id,
+          day: selectedDay,
+          time: selectedTime,
+        })
+          .unwrap()
+          .then(() => {
+            onSuccess();
           })
-        : addDay({
-            day: selectedDay,
-            time,
+          .catch(() => {
+            onFaild();
+          })
+      : addDay({
+          day: selectedDay,
+          time: selectedTime,
+        })
+          .unwrap()
+          .then(() => {
+            onSuccess();
+          })
+          .catch(() => {
+            onFaild();
           });
+  }, [selectedDay, selectedTime, onSuccess]);
+
+  const handleChangeTime = useCallback(
+    (value: string) => {
+      setSelectedTime(value);
     },
-    [selectedDay],
+    [selectedDay, selectedTime],
   );
 
   return (
@@ -56,8 +91,10 @@ const DateList = () => {
         <TimeList
           selectedDay={selectedDay}
           currentDayData={currentDayData}
+          selectedTime={selectedTime}
           onResetDate={() => setSelectedDay("")}
           onSubmit={handleSubmit}
+          onChangeTime={handleChangeTime}
         />
       )}
     </>

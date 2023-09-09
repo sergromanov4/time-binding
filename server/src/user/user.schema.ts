@@ -9,6 +9,9 @@ export class User {
   name: string;
 
   @Prop()
+  description: string;
+
+  @Prop()
   login: string;
 
   @Prop()

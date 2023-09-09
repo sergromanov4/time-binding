@@ -4,7 +4,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { accessTokenDto } from 'src/dto/user.dto';
+import { updateUserDto, userLoginResponse } from 'src/dto/user.dto';
 
 import { User } from 'src/user/user.schema';
 import { UserService } from 'src/user/user.service';
@@ -16,7 +16,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async login(login: string, pass: string): Promise<accessTokenDto> {
+  async login(login: string, pass: string): Promise<userLoginResponse> {
     const user = await this.userService.findOne(login);
 
     if (user?.password !== pass) {
@@ -27,10 +27,18 @@ export class AuthService {
       sub: user.login,
       password: user.password,
     });
-    return { access_token };
+
+    return {
+      login: user.login,
+      name: user.name,
+      description: user.description,
+      classCount: user.classCount,
+      isAdmin: user.isAdmin,
+      access_token,
+    };
   }
 
-  async register(login: string, password: string): Promise<accessTokenDto> {
+  async register(login: string, password: string): Promise<userLoginResponse> {
     const user = await this.userService.findOne(login);
 
     if (!user) {
@@ -47,7 +55,14 @@ export class AuthService {
         password: newUser.password,
       });
 
-      return { access_token };
+      return {
+        login: newUser.login,
+        name: newUser.name,
+        description: newUser.description,
+        classCount: newUser.classCount,
+        isAdmin: newUser.isAdmin,
+        access_token,
+      };
     } else {
       throw new HttpException('Такой пользователь уже существует', 403);
     }
@@ -55,5 +70,9 @@ export class AuthService {
 
   async getAllUsers(): Promise<User[]> {
     return await this.userService.getAllUsers();
+  }
+
+  async updateUser(dto: updateUserDto): Promise<User> {
+    return await this.userService.updateUser(dto);
   }
 }

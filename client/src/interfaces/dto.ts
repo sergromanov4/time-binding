@@ -9,3 +9,9 @@ export interface updateDateDto {
   time: string;
   status?: string;
 }
+
+export interface updateUserDto {
+  name: string;
+  login: string;
+  description: string;
+}

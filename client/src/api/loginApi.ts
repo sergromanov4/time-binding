@@ -12,20 +12,17 @@ export const loginApi = createApi({
         url: "login",
         method: "POST",
         body: payload,
-      })
+      }),
     }),
 
     register: builder.mutation({
-        query: (payload: ILogin) => ({
-          url: "register",
-          method: "POST",
-          body: payload,
-        }),
-      })
+      query: (payload: ILogin) => ({
+        url: "register",
+        method: "POST",
+        body: payload,
+      }),
+    }),
   }),
 });
 
-export const {
-  useLoginMutation,
-  useRegisterMutation
-} = loginApi;
+export const { useLoginMutation, useRegisterMutation } = loginApi;

@@ -1,28 +1,50 @@
 "use client";
 
-import { createSlice } from "@reduxjs/toolkit";
+import { ILoginResponse } from "@/interfaces/common";
+import { IUserInfo } from "@/interfaces/user";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 interface IProfileSlice {
-  isAutorize: boolean;
+  isAuthorized: boolean;
   token: string;
+  userInfo: IUserInfo;
 }
 
 const initialState: IProfileSlice = {
-  isAutorize: false,
-  token: '',
+  isAuthorized: false,
+  token: "",
+  userInfo: {
+    login: "",
+    description: "",
+    name: "",
+    classCount: 0,
+    isAdmin: false,
+  },
 };
 
 export const profileSlice = createSlice({
   name: "profile",
   initialState,
   reducers: {
-    setToken: (state, { payload }) => {
-      state.token = payload;
-      state.isAutorize = true;
+    setToken: (state, { payload }: PayloadAction<ILoginResponse>) => {
+      state.token = payload.access_token;
+      state.isAuthorized = true;
+      state.userInfo.classCount = payload.classCount;
+      state.userInfo.login = payload.login;
+      state.userInfo.description = payload.description;
+      state.userInfo.name = payload.name;
+      state.userInfo.isAdmin = payload.isAdmin;
+    },
+    updateProfile: (state, { payload }: PayloadAction<ILoginResponse>) => {
+      state.userInfo.description = payload.description;
+      state.userInfo.name = payload.name;
+    },
+    resetAuth: () => {
+      return initialState;
     },
   },
 });
 
-export const { setToken } = profileSlice.actions;
+export const { setToken, updateProfile, resetAuth } = profileSlice.actions;
 
 export default profileSlice.reducer;
