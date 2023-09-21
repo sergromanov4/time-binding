@@ -9,7 +9,8 @@ import { toast } from "react-toastify";
 
 import { setToken } from "@/store/profileSlice";
 import { useRegisterMutation } from "@/api/loginApi";
-import { IError, ILoginResponse } from "@/interfaces/common";
+
+import type { IError, ILoginResponse } from "@/interfaces/common";
 
 enum FieldType {
   login = "login",

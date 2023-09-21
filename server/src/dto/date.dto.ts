@@ -4,7 +4,7 @@ export class createDateDto {
 }
 
 export class updateDateDto {
-  date: string;
+  day: string;
   time: string;
   status?: string;
 }

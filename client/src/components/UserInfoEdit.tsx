@@ -2,13 +2,14 @@
 
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import classnames from "classnames";
 
-import { IUserInfo } from "@/interfaces/user";
 import { useUpdateUserMutation } from "@/api";
-import { ILoginResponse } from "@/interfaces/common";
-import { useDispatch } from "react-redux";
 import { updateProfile } from "@/store/profileSlice";
+
+import type { IUserInfo } from "@/interfaces/user";
+import type { ILoginResponse } from "@/interfaces/common";
 
 interface IUserInfoEditProps {
   userInfo: IUserInfo;

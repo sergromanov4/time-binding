@@ -2,17 +2,19 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { usePathname } from "next/navigation"
+import { usePathname } from "next/navigation";
 import { useSelector } from "react-redux";
 import { RiseLoader } from "react-spinners";
+import { Settings } from "luxon";
 
 import { IRootStore } from "@/store";
 import AsideMenu from "@/components/AsideMenu";
 
+Settings.defaultLocale = "ru";
+
 export default function Layout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathName = usePathname();
-  
 
   const isAuthorized: boolean = useSelector(
     (store: IRootStore) => store.profile.isAuthorized,
@@ -23,7 +25,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       router.push("/login");
     }
   }, [isAuthorized]);
-
 
   return (
     <>

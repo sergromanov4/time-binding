@@ -1,21 +1,22 @@
+import { DateTime } from "luxon";
+
 function getDatesForTwoWeeks() {
-  const currentDate = new Date();
-  const endDate = new Date(currentDate);
-  endDate.setDate(currentDate.getDate() + 13); // Добавляем 13 дней для получения двух недель
+  const currentDate = DateTime.now();
 
-  const datesArray = [];
+  // Создаем массив для хранения дат на следующие две недели
+  const dateList: string[] = [];
 
-  while (currentDate <= endDate) {
-    const day = currentDate.getDate().toString().padStart(2, "0");
-    const month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
-    const year = currentDate.getFullYear();
-    const formattedDate = `${day}.${month}.${year}`;
-    datesArray.push(formattedDate);
+  // Добавляем текущую дату в массив
+  dateList.push(currentDate.toFormat("dd.MM.yyyy"));
 
-    currentDate.setDate(currentDate.getDate() + 1); // Увеличиваем текущую дату на 1 день
+  // Создаем цикл для добавления следующих дат
+  for (let i = 1; i < 14; i++) {
+    // 14 дней в двух неделях
+    const nextDate = currentDate.plus({ days: i });
+    dateList.push(nextDate.toFormat("dd.MM.yyyy"));
   }
 
-  return datesArray;
+  return dateList;
 }
 
 function formatDateToDayMonth(isoDate: string) {

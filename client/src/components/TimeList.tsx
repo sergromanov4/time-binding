@@ -1,12 +1,10 @@
-import { useCallback, useState } from "react";
+import React from "react";
 
 import { dayTimeList } from "@/constants/time";
 
 import type { IDay } from "@/interfaces/date";
 
 import TimeItem from "./TimeItem";
-import React from "react";
-import classNames from "classnames";
 
 interface ITimeListProps {
   selectedDay: string;

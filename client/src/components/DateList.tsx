@@ -10,7 +10,10 @@ import {
   useUpdateDayMutation,
 } from "@/api";
 
+import type { IDay } from "@/interfaces/date";
+
 import TimeList from "./TimeList";
+import DayItem from "./DayItem";
 
 const DateList = () => {
   const { data } = useGetDayListQuery();
@@ -24,6 +27,13 @@ const DateList = () => {
     return (data && data.find((item) => item.day === selectedDay)) || null;
   }, [data, selectedDay]);
 
+  const getDayData = useCallback(
+    (day: string) => {
+      return (data && data.find((item) => item.day === day)) || null;
+    },
+    [data],
+  );
+
   const onSuccess = useCallback(() => {
     window.scrollTo({ top: 0 });
     setSelectedTime("");
@@ -33,8 +43,8 @@ const DateList = () => {
     });
   }, []);
 
-  const onFaild = useCallback(() => {
-    toast.error("Что то пошло не так. Попробуй еще раз", {
+  const onFaild = useCallback((message?: string) => {
+    toast.error(message || "Что то пошло не так. Попробуй еще раз", {
       position: toast.POSITION.TOP_RIGHT,
     });
   }, []);
@@ -50,8 +60,12 @@ const DateList = () => {
           .then(() => {
             onSuccess();
           })
-          .catch(() => {
-            onFaild();
+          .catch((res) => {
+            onFaild(
+              res.status === 409
+                ? "Это время уже занято, обновите страницу"
+                : "",
+            );
           })
       : addDay({
           day: selectedDay,
@@ -61,8 +75,12 @@ const DateList = () => {
           .then(() => {
             onSuccess();
           })
-          .catch(() => {
-            onFaild();
+          .catch((res) => {
+            onFaild(
+              res.status === 409
+                ? "Это время уже занято, обновите страницу"
+                : "",
+            );
           });
   }, [selectedDay, selectedTime, onSuccess]);
 
@@ -78,13 +96,12 @@ const DateList = () => {
       {!selectedDay ? (
         <div className="grid grid-cols-3 gap-8 w-full">
           {getDatesForTwoWeeks().map((item) => (
-            <button
+            <DayItem
               key={item}
-              className="p-4 bg-white rounded-xl border-slate-400 border-2 w-full h-32 flex justify-center items-center hover:cursor-pointer hover:bg-slate-400  hover:text-white"
+              data={getDayData(item) as IDay}
+              time={item}
               onClick={() => setSelectedDay(item)}
-            >
-              {item}
-            </button>
+            />
           ))}
         </div>
       ) : (

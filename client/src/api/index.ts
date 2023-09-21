@@ -1,7 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { IDay } from "@/interfaces/date";
-import { createDateDto, updateDateDto, updateUserDto } from "@/interfaces/dto";
-import { IRootStore } from "@/store";
+
+import type { IRootStore } from "@/store";
+import type { IDay } from "@/interfaces/date";
+import type {
+  createDateDto,
+  updateDateDto,
+  updateUserDto,
+} from "@/interfaces/dto";
 
 export const dayListAPI = createApi({
   reducerPath: "dayListAPI",

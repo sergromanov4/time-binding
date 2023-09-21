@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { ILogin } from "@/interfaces/user";
+
+import type { ILogin } from "@/interfaces/user";
 
 export const loginApi = createApi({
   reducerPath: "loginApi",

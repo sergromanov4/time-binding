@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { IUserInfo } from "@/interfaces/user";
+import type { IUserInfo } from "@/interfaces/user";
 
 interface IUserInfoProps {
   userInfo: IUserInfo;
@@ -10,20 +10,20 @@ interface IUserInfoProps {
 const UserInfo: React.FC<IUserInfoProps> = ({ userInfo, onEditClick }) => {
   return (
     <>
-      <div className="flex flex-col gap-2 justify-start items-start text-lg border-b-2 border-blue-300 pb-2 sm:flex-row sm:items-center sm:border-b-0">
-        <span className="font-bold">Логин:</span>
+      <div className="flex flex-col gap-2 justify-start items-start text-lg border-b-2 border-blue-300 pb-2 sm:flex-row sm:border-b-0">
+        <span className="font-bold max-w-[90px] w-full">Логин:</span>
         <span>{userInfo.login}</span>
       </div>
-      <div className="flex flex-col gap-2 justify-start items-start text-lg border-b-2 border-blue-300 pb-2 sm:flex-row sm:items-center sm:border-b-0">
-        <span className="font-bold ">Имя:</span>
+      <div className="flex flex-col gap-2 justify-start items-start text-lg border-b-2 border-blue-300 pb-2 sm:flex-row sm:border-b-0">
+        <span className="font-bold max-w-[90px] w-full ">Имя:</span>
         <span>{userInfo.name}</span>
       </div>
-      <div className="flex flex-col gap-2 justify-start items-start text-lg border-b-2 border-blue-300 pb-2 sm:flex-row sm:items-center sm:border-b-0">
-        <span className="font-bold">Обо мне:</span>
-        <span>{userInfo.description}</span>
+      <div className="flex flex-col gap-2 justify-start items-start text-lg border-b-2 border-blue-300 pb-2 sm:flex-row sm:border-b-0">
+        <span className="font-bold max-w-[90px] w-full">Обо мне:</span>
+        <span className="whitespace-pre-wrap">{userInfo.description}</span>
       </div>
-      <div className="flex flex-col gap-2 justify-start items-start text-lg border-b-2 border-blue-300 pb-2 sm:flex-row sm:items-center sm:border-b-0">
-        <span className="font-bold">Доступное кол-во уроков:</span>
+      <div className="flex flex-col gap-2 justify-start items-start text-lg border-b-2 border-blue-300 pb-2 sm:flex-row sm:border-b-0">
+        <span className="font-bold max-w-[90px] w-full">Уроков:</span>
         <span>{userInfo.classCount}</span>
       </div>
 

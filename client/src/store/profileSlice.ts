@@ -1,8 +1,9 @@
 "use client";
 
-import { ILoginResponse } from "@/interfaces/common";
-import { IUserInfo } from "@/interfaces/user";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+
+import type { ILoginResponse } from "@/interfaces/common";
+import type { IUserInfo } from "@/interfaces/user";
 
 interface IProfileSlice {
   isAuthorized: boolean;

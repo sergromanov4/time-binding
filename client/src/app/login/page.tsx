@@ -9,7 +9,8 @@ import classNames from "classnames";
 
 import { setToken } from "@/store/profileSlice";
 import { useLoginMutation } from "@/api/loginApi";
-import { ILoginResponse } from "@/interfaces/common";
+
+import type { ILoginResponse } from "@/interfaces/common";
 
 enum FieldType {
   login = "login",
